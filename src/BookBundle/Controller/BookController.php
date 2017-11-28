@@ -73,4 +73,18 @@ class BookController extends Controller
 		return $response;
     }
 
+    /**
+    * @Route("/updateBook/{id}", name="edit_book")
+    * @Method({"PUT"})
+    */
+    public function updateAction(Request $request ,$id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$book = $em->getRepository('BookBundle:book')->find($id);
+		$book->setTitle("aaaaaaaaaaaaaaa")->setAuthor('aaaaaaaa');
+		$em->flush();
+
+		return new Response('', Response::HTTP_CREATED);
+    }
+
 }
