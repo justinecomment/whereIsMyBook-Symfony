@@ -57,5 +57,20 @@ class BookController extends Controller
     	return new Response('', Response::HTTP_CREATED);
     }
 
+	  /**
+    * @Route("/deleteBook/{id}", name="delete_book")
+    * @Method({"DELETE"})
+    */
+    public function deleteAction(book $book)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$em->remove($book);
+    	$em->flush();
+
+    	$response = new Response('book suprimé');
+		$response->setStatusCode(200);
+
+		return $response;
+    }
 
 }
