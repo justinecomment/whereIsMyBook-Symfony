@@ -41,6 +41,21 @@ class BookController extends Controller
     	return $response;
     }
 
+    /**
+    * @Route("/addbook", name="add_book")
+    * @Method({"POST"})
+    */
+    public function createAction(request $request)
+    {
+    	$data = $request->getContent();
+    	$book = $this->get('jms_serializer')->deserialize($data, 'BookBundle\Entity\book', 'json');
+
+    	$em = $this->getDoctrine()->getManager();
+    	$em->persist($book);
+    	$em->flush();
+
+    	return new Response('', Response::HTTP_CREATED);
+    }
 
 
 }
