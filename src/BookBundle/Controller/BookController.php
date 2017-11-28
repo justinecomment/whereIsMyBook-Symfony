@@ -26,6 +26,21 @@ class BookController extends Controller
     	return $response;
     }
 
-    
+    /**
+    * @Route("/listbook", name="list_book")
+    */
+    public function getAllAction()
+    {
+    	$books = $this->getDoctrine()->getRepository('BookBundle:book')->findAll();
+
+    	$data = $this->get('jms_serializer')->serialize($books,'json');
+
+    	$response = new Response($data);
+    	$response->headers->set('Content-Type', 'application/json');
+
+    	return $response;
+    }
+
+
 
 }
