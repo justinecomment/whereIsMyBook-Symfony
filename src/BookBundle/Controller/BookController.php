@@ -81,7 +81,12 @@ class BookController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
     	$book = $em->getRepository('BookBundle:book')->find($id);
-		$book->setTitle("aaaaaaaaaaaaaaa")->setAuthor('aaaaaaaa');
+		
+		$all = $request->getContent(); 
+    	$tab = json_decode($all, true);
+    	$title = $tab['title'];
+    	$author = $tab['author'];
+		$book->setTitle($title)->setAuthor($author);
 		$em->flush();
 
 		return new Response('', Response::HTTP_CREATED);
