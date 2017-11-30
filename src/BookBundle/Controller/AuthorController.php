@@ -24,4 +24,15 @@ class AuthorController extends Controller
 
 		return $response;
 	}
+
+	/**
+	* @Route("/author/{id}", name="get_author")
+	*/
+	public function getAction(Author $author)
+	{
+		$author = $this->get('jms_serializer')->serialize($author, 'json');
+		$response = new Response($author);
+
+		return $response;
+	}
 }
