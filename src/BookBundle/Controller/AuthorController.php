@@ -54,4 +54,21 @@ class AuthorController extends Controller
 
 		return new Response('', Response::HTTP_CREATED);
 	}
+
+	/**
+	* @Route("/deleteAuthor/{id}", name="delete_author")
+    * @Method({"DELETE"})
+	*/
+	public function deleteAction(Author $author)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$em->remove($author);
+		$em->flush();
+
+		$response = new Response('auteur supprimé');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+
+		return $response;
+	}
 }
