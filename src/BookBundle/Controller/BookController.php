@@ -22,6 +22,7 @@ class BookController extends Controller
     	$data = $this->get('jms_serializer')->serialize($book, 'json');
     	$response = new Response($data);
     	$response->headers->set('Content-Type', 'application-json');
+    	$response->send();
 
     	return $response;
     }
@@ -37,6 +38,7 @@ class BookController extends Controller
 
     	$response = new Response($data);
     	$response->headers->set('Content-Type', 'application/json');
+    	$response->headers->set('Access-Control-Allow-Origin', '*');
 
     	return $response;
     }
@@ -59,7 +61,7 @@ class BookController extends Controller
 
 	  /**
     * @Route("/deleteBook/{id}", name="delete_book")
-    * @Method({"DELETE"})
+    * @Method({"OPTIONS"})
     */
     public function deleteAction(book $book)
     {
@@ -67,8 +69,9 @@ class BookController extends Controller
     	$em->remove($book);
     	$em->flush();
 
-    	$response = new Response('book suprimé');
-		$response->setStatusCode(200);
+    	$response = new Response('');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 
 		return $response;
     }
