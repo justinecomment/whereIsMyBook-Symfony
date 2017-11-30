@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 use BookBundle\Entity\Author;
 
 class AuthorController extends Controller
@@ -34,5 +36,22 @@ class AuthorController extends Controller
 		$response = new Response($author);
 
 		return $response;
+	}
+
+
+	/**
+	* @Route("/addAuthor", name="add_author")
+    * @Method({"POST"})
+	*/
+	public function createAction(Request $request)
+	{	
+		$data = $request->getContent();
+		$author = $this->get('jms_serializer')->deserialize($data, 'BookBundle\Entity\Author' ,'json');
+
+		$em = $this->getDoctrine()->getManager();
+		$em->persist($author);
+		$em->flush();
+
+		return new Response('', Response::HTTP_CREATED);
 	}
 }
