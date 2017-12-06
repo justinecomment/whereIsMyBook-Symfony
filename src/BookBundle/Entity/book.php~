@@ -286,28 +286,5 @@ class book
     {
         return $this->isbn;
     }
-
-    /**
-     * Set pret
-     *
-     * @param \BookBundle\Entity\Pret $pret
-     *
-     * @return book
-     */
-    public function setPret(\BookBundle\Entity\Pret $pret = null)
-    {
-        $this->pret = $pret;
-
-        return $this;
-    }
-
-    /**
-     * Get pret
-     *
-     * @return \BookBundle\Entity\Pret
-     */
-    public function getPret()
-    {
-        return $this->pret;
-    }
 }
+

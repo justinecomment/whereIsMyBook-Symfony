@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Nelmio\CorsBundle\NelmioCorsBundle;
-
 use BookBundle\Entity\Author;
 
 class AuthorController extends Controller
@@ -94,4 +93,5 @@ class AuthorController extends Controller
 		return new Response('updated');
        
 	}
+
 }

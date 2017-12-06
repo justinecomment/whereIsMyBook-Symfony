@@ -5,10 +5,13 @@ namespace BookBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
-use BookBundle\Entity\book;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Nelmio\CorsBundle\NelmioCorsBundle;
+use BookBundle\Entity\book;
+
+
 
 
 class BookController extends Controller
@@ -19,10 +22,10 @@ class BookController extends Controller
     */
     public function getAction(book $book)
     {
+        $books = $this->getDoctrine()->getRepository('BookBundle:book')->findAll();
+
     	$data = $this->get('jms_serializer')->serialize($book, 'json');
     	$response = new Response($data);
-    	$response->headers->set('Content-Type', 'application-json');
-    	$response->send();
 
     	return $response;
     }
@@ -58,7 +61,7 @@ class BookController extends Controller
 
 	  /**
     * @Route("/deleteBook/{id}", name="delete_book")
-    * @Method({"OPTIONS"})
+    * @Method({"DELETE"})
     */
     public function deleteAction(book $book)
     {
@@ -66,7 +69,7 @@ class BookController extends Controller
     	$em->remove($book);
     	$em->flush();
 
-    	return new Response('');
+    	return new Response('deleted');
     }
 
     /**
@@ -85,7 +88,7 @@ class BookController extends Controller
 		$book->setTitle($title)->setAuthor($author);
 		$em->flush();
 
-		return new Response('', Response::HTTP_CREATED);
+		return new Response($tab);
     }
 
 }
