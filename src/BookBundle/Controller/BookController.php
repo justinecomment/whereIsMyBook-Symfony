@@ -37,9 +37,6 @@ class BookController extends Controller
     	$data = $this->get('jms_serializer')->serialize($books,'json');
 
     	$response = new Response($data);
-    	$response->headers->set('Content-Type', 'application/json');
-    	$response->headers->set('Access-Control-Allow-Origin', '*');
-
     	return $response;
     }
 
@@ -69,11 +66,7 @@ class BookController extends Controller
     	$em->remove($book);
     	$em->flush();
 
-    	$response = new Response('');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-
-		return $response;
+    	return new Response('');
     }
 
     /**

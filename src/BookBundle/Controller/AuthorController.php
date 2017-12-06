@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Nelmio\CorsBundle\NelmioCorsBundle;
 
 use BookBundle\Entity\Author;
 
@@ -57,7 +58,7 @@ class AuthorController extends Controller
 
 	/**
 	* @Route("/deleteAuthor/{id}", name="delete_author")
-    * @Method({"DELETE"})
+    * @Method({"OPTIONS"})
 	*/
 	public function deleteAction(Author $author)
 	{
@@ -65,10 +66,33 @@ class AuthorController extends Controller
 		$em->remove($author);
 		$em->flush();
 
-		$response = new Response('auteur supprimé');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		return null;
+	}
 
-		return $response;
+	/**
+	* @Route("/updateAuthor/{id}", name="update_author")
+    * @Method({"PUT"})
+	*/
+	public function updateAction(Request $request, $id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$author = $em->getRepository('BookBundle:Author')->find($id);
+
+		$content = $request->getContent();
+		$data = json_decode($content, true);
+		$nom = $data['nom'];
+		$prenom = $data['prenom'];
+		$nationalite = $data['nationalite'];
+		$vivant = $data['vivant'];
+
+		$author
+			->setNom($nom)
+			->setPrenom($prenom)
+			->setNationalite($nationalite)
+			->setVivant($vivant);
+		$em->flush();
+
+		return new Response('updated');
+       
 	}
 }
