@@ -23,9 +23,7 @@ class AuthorController extends Controller
 		$authors = $this->getDoctrine()->getRepository('BookBundle:Author')->findAll();
 		$data = $this->get('jms_serializer')->serialize($authors, 'json');
 
-		$response = new Response($data);
-
-		return $response;
+		return new Response($data);
 	}
 
 	/**
@@ -53,12 +51,12 @@ class AuthorController extends Controller
 		$em->persist($author);
 		$em->flush();
 
-		return new Response('', Response::HTTP_CREATED);
+		return new Response('added', Response::HTTP_CREATED);
 	}
 
 	/**
 	* @Route("/deleteAuthor/{id}", name="delete_author")
-    * @Method({"OPTIONS"})
+    * @Method({"DELETE"})
 	*/
 	public function deleteAction(Author $author)
 	{
@@ -66,7 +64,7 @@ class AuthorController extends Controller
 		$em->remove($author);
 		$em->flush();
 
-		return null;
+		return new Response('deleted');
 	}
 
 	/**
@@ -80,6 +78,7 @@ class AuthorController extends Controller
 
 		$content = $request->getContent();
 		$data = json_decode($content, true);
+		
 		$nom = $data['nom'];
 		$prenom = $data['prenom'];
 		$nationalite = $data['nationalite'];
