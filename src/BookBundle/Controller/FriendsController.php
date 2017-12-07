@@ -53,5 +53,19 @@ class FriendsController extends Controller
 		return new Response('added', Response::HTTP_CREATED);
 	}
 
+	/**
+	* @Route("/deleteFriend/{id}", name="delete_friend")
+    * @Method({"DELETE"})
+	*/
+	public function deleteAction(Friends $friend)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$em->remove($friend);
+		$em->flush();
+
+		return new Response('deleted');
+	}
+
+
 
 }
