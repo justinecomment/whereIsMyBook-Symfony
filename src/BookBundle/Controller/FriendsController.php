@@ -67,5 +67,30 @@ class FriendsController extends Controller
 	}
 
 
+	/**
+	* @Route("/updateFriend/{id}", name="update_friend")
+    * @Method({"PUT"})
+	*/
+	public function updateAction(Request $request, $id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$friend = $em->getRepository('BookBundle:Friends')->find($id);
+
+		$content = $request->getContent();
+		$data = json_decode($content, true);
+		
+		$nom = $data['nom'];
+		$prenom = $data['prenom'];
+
+		$friend
+			->setNom($nom)
+			->setPrenom($prenom);
+		$em->flush();
+
+		return new Response('updated');
+       
+	}
+
+
 
 }
